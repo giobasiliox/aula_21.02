@@ -1,4 +1,4 @@
-import { Text, View, StyleSheet, TouchableOpacity, TextInput } from "react-native";
+import { Text, View, StyleSheet, TouchableOpacity, TextInput, ScrollView } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import React, { useState } from "react";
 
@@ -16,6 +16,10 @@ export default function App() {
       }]);
       setTask("");
     }
+  };
+
+  const removeTask = (taskId) => {
+    setTasks(tasks.filter((task) => task.id !== taskId));
   };
 
   return (
@@ -43,6 +47,24 @@ export default function App() {
           <Text style={styles.filterlist}>Tarefas Cadastradas</Text>
         )}
       </View>
+
+      <ScrollView style={styles.scrollList} showsVerticalScrollIndicator={false}>
+        {tasks.map((task) => (
+          <View
+            key={task.id}
+            style={styles.listItem}
+          >
+            <Text style={styles.widthText}>{task.value}</Text>
+            <TouchableOpacity
+              onPress={() => removeTask(task.id)}
+              style={styles.removeButton}
+            >
+              <Text className={`text-white`}>Remover</Text>
+            </TouchableOpacity>
+          </View>
+        ))}
+      </ScrollView>
+
       <StatusBar style="auto" />
     </View>
   );
@@ -84,5 +106,26 @@ const styles = StyleSheet.create({
     textAlign: "center",
     color: "green",
     fontSize: 20,
+  },
+  scrollList: {
+    marginBottom: 24,
+  },
+  listItem: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: 20,
+    borderBottomWidth: 1,
+    borderBottomColor: "black",
+    paddingBottom: 10,
+  },
+  widthText: {
+    width: "75%",
+  },
+  removeButton: {
+    backgroundColor: "red",
+    padding: 8,
+    borderRadius: 5,
   },
 });
