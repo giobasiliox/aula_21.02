@@ -5,9 +5,23 @@ import React, { useState } from "react";
 export default function App() {
 
   const [task, setTask] = useState("");
+  const [tasks, setTasks] = useState([]);
+
+
+  const addTask = () => {
+    if (task.trim().length > 0) {
+      setTasks([...tasks, {
+        id: Math.random().toString(),
+        value: task
+      }]);
+      setTask("");
+    }
+  };
+
   return (
     <View style={styles.container}>
-      <View style={styles.inputContainer}>
+      <View style={styles.form}>
+
         <TextInput
           style={styles.inputLine}
           placeholder="Digite uma nova tarefa"
@@ -16,9 +30,18 @@ export default function App() {
         />
         <TouchableOpacity
           style={styles.button}
+          onPress={addTask}
         >
           <Text style={styles.inputText} >Adicionar</Text>
         </TouchableOpacity>
+      </View>
+
+      <View style={styles.listTitle}>
+        {tasks.length === 0 ? (
+          <Text style={styles.empyList}>Nenhuma Tarefa Cadastrada</Text>
+        ) : (
+          <Text style={styles.filterlist}>Tarefas Cadastradas</Text>
+        )}
       </View>
       <StatusBar style="auto" />
     </View>
@@ -29,7 +52,7 @@ const styles = StyleSheet.create({
   container: {
     padding: 50,
   },
-  inputContainer: {
+  form: {
     display: "flex",
     flexDirection: "row",
     justifyContent: "space-between",
@@ -49,5 +72,17 @@ const styles = StyleSheet.create({
   },
   inputText: {
     color: "white",
+  },
+  listTitle: {
+    marginBottom: 10,
+  },
+  empyList: {
+    textAlign: "center",
+    color: "red",
+  },
+  filterlist: {
+    textAlign: "center",
+    color: "green",
+    fontSize: 20,
   },
 });
